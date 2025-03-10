@@ -91,7 +91,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
@@ -102,7 +102,7 @@ vim.g.have_nerd_font = false
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
--- vim.opt.relativenumber = true
+vim.opt.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
@@ -178,7 +178,7 @@ vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' }
 -- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
 -- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
 -- vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
--- vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
+--vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
@@ -229,7 +229,6 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
-
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
   -- keys can be used to configure plugin behavior/loading/etc.
@@ -890,7 +889,6 @@ require('lazy').setup({
     --
     -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
     'folke/tokyonight.nvim',
-    priority = 1000, -- Make sure to load this before all the other start plugins.
     config = function()
       ---@diagnostic disable-next-line: missing-fields
       require('tokyonight').setup {
@@ -902,7 +900,90 @@ require('lazy').setup({
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight-night'
+      -- vim.cmd.colorscheme 'tokyonight'
+    end,
+  },
+  {
+    'nuvic/flexoki-nvim',
+    name = 'flexoki',
+    lazy = false,
+    priority = 1000, -- Make sure to load this before all the other start plugins.
+    config = function()
+      require('flexoki').setup {
+        variant = 'auto', -- auto, moon, or dawn
+        dim_inactive_windows = false,
+        extend_background_behind_borders = true,
+
+        enable = {
+          terminal = true,
+        },
+
+        styles = {
+          bold = true,
+          italic = false,
+        },
+
+        groups = {
+          border = 'muted',
+          link = 'purple_two',
+          panel = 'surface',
+
+          error = 'red_one',
+          hint = 'purple_one',
+          info = 'cyan_one',
+          ok = 'green_one',
+          warn = 'orange_one',
+          note = 'blue_one',
+          todo = 'magenta_one',
+
+          git_add = 'green_one',
+          git_change = 'yellow_one',
+          git_delete = 'red_one',
+          git_dirty = 'yellow_one',
+          git_ignore = 'muted',
+          git_merge = 'purple_one',
+          git_rename = 'blue_one',
+          git_stage = 'purple_one',
+          git_text = 'magenta_one',
+          git_untracked = 'subtle',
+
+          h1 = 'purple_two',
+          h2 = 'cyan_two',
+          h3 = 'magenta_two',
+          h4 = 'orange_two',
+          h5 = 'blue_two',
+          h6 = 'cyan_two',
+        },
+
+        palette = {
+          -- Override the builtin palette per variant
+          -- moon = {
+          --     base = '#100f0f',
+          --     overlay = '#1c1b1a',
+          -- },
+        },
+
+        highlight_groups = {
+          -- Comment = { fg = "subtle" },
+          -- VertSplit = { fg = "muted", bg = "muted" },
+        },
+
+        before_highlight = function(group, highlight, palette)
+          -- Disable all undercurls
+          -- if highlight.undercurl then
+          --     highlight.undercurl = false
+          -- end
+          --
+          -- Change palette colour
+          -- if highlight.fg == palette.blue_two then
+          --     highlight.fg = palette.cyan_two
+          -- end
+        end,
+      }
+
+      vim.cmd 'colorscheme flexoki'
+      -- vim.cmd("colorscheme flexoki-moon")
+      -- vim.cmd("colorscheme flexoki-dawn")
     end,
   },
 
